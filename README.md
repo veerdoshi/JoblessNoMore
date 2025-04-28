@@ -4,13 +4,13 @@ A web application built with FastAPI (backend) and Next.js (frontend).
 
 ## Project Structure
 
-project/
-├── backend/ # FastAPI backend
-│ ├── app/
-│ └── requirements.txt
-└── frontend/ # Next.js frontend
-└── src/
+**/backend**
 
+  /app
+  
+**/frontend**
+
+  /src/app
 
 ## Setup Instructions
 
