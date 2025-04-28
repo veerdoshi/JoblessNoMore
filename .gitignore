@@ -1,0 +1,15 @@
+# IDE and Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+*.pem
+
+# Environment variables
+.env*
+
+# Debug logs
+*.log
