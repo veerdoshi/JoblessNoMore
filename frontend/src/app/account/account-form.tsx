@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import { type User } from '@supabase/supabase-js'
+import Resume from './resume'
 
 // ...
 
@@ -14,6 +15,7 @@ export default function AccountForm({ user }: { user: User | null }) {
   const [education, setEducation] = useState<string | null>(null)
   const [swe, setSwe] = useState<boolean>(false)
   const [dataSci, setDataSci] = useState<boolean>(false)
+  const [resumeUrl, setResumeUrl] = useState<string | null>(null)
 
   const getProfile = useCallback(async () => {
     try {
@@ -21,7 +23,7 @@ export default function AccountForm({ user }: { user: User | null }) {
 
       const { data, error, status } = await supabase
         .from('profiles')
-        .select(`username, firstname, lastname, education, jobPreferences`)
+        .select(`username, firstname, lastname, education, jobPreferences, resumeUrl`)
         .eq('id', user?.id)
         .single()
 
@@ -36,8 +38,9 @@ export default function AccountForm({ user }: { user: User | null }) {
         setLastname(data.lastname)
         setEducation(data.education)
         const jobPreferences = JSON.parse(data.jobPreferences)
-        setSwe(!!jobPreferences?.["swe"])
-        setDataSci(!!jobPreferences?.["dataSci"])
+        setSwe(Boolean(jobPreferences?.["swe"]))
+        setDataSci(Boolean(jobPreferences?.["dataSci"]))
+        setResumeUrl(data.resumeUrl)
       }
     } catch (error) {
       console.error(error)
@@ -58,6 +61,7 @@ export default function AccountForm({ user }: { user: User | null }) {
     education,
     swe,
     dataSci,
+    resumeUrl,
   }: {
     username: string | null
     firstname: string | null
@@ -65,6 +69,7 @@ export default function AccountForm({ user }: { user: User | null }) {
     education: string | null
     swe: boolean
     dataSci: boolean
+    resumeUrl: string | null
   }) {
     try {
       setLoading(true)
@@ -80,6 +85,7 @@ export default function AccountForm({ user }: { user: User | null }) {
           swe,
           dataSci
         }),
+        resumeUrl,
         updated_at: new Date().toISOString(),
       })
       if (error) throw error
@@ -94,9 +100,6 @@ export default function AccountForm({ user }: { user: User | null }) {
 
   return (
     <div className="form-widget">
-
-      {/* ... */}
-
       <div>
         <label htmlFor="email">Email</label>
         <input id="email" type="text" value={user?.email} disabled />
@@ -149,10 +152,24 @@ export default function AccountForm({ user }: { user: User | null }) {
         </div>
       </fieldset>
 
+      <Resume uid={user?.id} url={resumeUrl} onUpload={url => {
+        setResumeUrl(url)
+        updateProfile({
+          username,
+          firstname,
+          lastname,
+          education,
+          swe,
+          dataSci,
+          resumeUrl: url,
+        })
+      }} />
+
+
       <div>
         <button
           className="button primary block"
-          onClick={() => updateProfile({ username, firstname, lastname, education, swe, dataSci })}
+          onClick={() => updateProfile({ username, firstname, lastname, education, swe, dataSci, resumeUrl })}
           disabled={loading}
         >
           {loading ? 'Loading ...' : 'Update'}
