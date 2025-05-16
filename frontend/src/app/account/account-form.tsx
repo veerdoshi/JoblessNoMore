@@ -99,7 +99,127 @@ export default function AccountForm({ user }: { user: User | null }) {
   }
 
   return (
-    <div className="form-widget">
+    <div className="max-w-xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg space-y-6">
+      <h1 className="text-2xl font-semibold text-gray-800">Account Settings</h1>
+      <div className="space-y-4">
+      <div>
+        <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+        <input
+          id="email"
+          type="text"
+          value={user?.email}
+          disabled
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm bg-gray-100 text-gray-600 cursor-not-allowed"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
+        <input
+          id="username"
+          type="text"
+          value={username || ''}
+          onChange={(e) => setUsername(e.target.value)}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="firstname" className="block text-sm font-medium text-gray-700">First Name</label>
+        <input
+          id="firstname"
+          type="text"
+          value={firstname || ''}
+          onChange={(e) => setFirstname(e.target.value)}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="lastname" className="block text-sm font-medium text-gray-700">Last Name</label>
+        <input
+          id="lastname"
+          type="text"
+          value={lastname || ''}
+          onChange={(e) => setLastname(e.target.value)}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="education" className="block text-sm font-medium text-gray-700">Education</label>
+        <input
+          id="education"
+          type="text"
+          value={education || ''}
+          onChange={(e) => setEducation(e.target.value)}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+        />
+      </div>
+    </div>
+
+    <fieldset className="border-t pt-4">
+      <legend className="text-sm font-medium text-gray-700 mb-2">Job Preferences</legend>
+      <div className="flex space-x-4">
+        <label className="inline-flex items-center">
+          <input
+            type="checkbox"
+            id="swe"
+            checked={swe}
+            onChange={e => setSwe(e.target.checked)}
+            className="form-checkbox text-indigo-600"
+          />
+          <span className="ml-2 text-gray-700">Software Engineering</span>
+        </label>
+        <label className="inline-flex items-center">
+          <input
+            type="checkbox"
+            id="datasci"
+            checked={dataSci}
+            onChange={e => setDataSci(e.target.checked)}
+            className="form-checkbox text-indigo-600"
+          />
+          <span className="ml-2 text-gray-700">Data Science</span>
+        </label>
+      </div>
+    </fieldset>
+
+    <Resume
+      uid={user?.id}
+      url={resumeUrl}
+      onUpload={url => {
+        setResumeUrl(url)
+        updateProfile({
+          username,
+          firstname,
+          lastname,
+          education,
+          swe,
+          dataSci,
+          resumeUrl: url,
+        })
+      }}
+    />
+
+    <div className="space-y-2">
+      <button
+        onClick={() => updateProfile({ username, firstname, lastname, education, swe, dataSci, resumeUrl })}
+        disabled={loading}
+        className={`w-full py-2 px-4 text-white font-semibold rounded-md shadow-sm ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'}`}
+      >
+        {loading ? 'Loading...' : 'Update Profile'}
+      </button>
+
+      <form action="/auth/signout" method="post">
+        <button
+          type="submit"
+          className="w-full py-2 px-4 bg-red-500 text-white font-semibold rounded-md shadow-sm hover:bg-red-600"
+        >
+          Sign out
+        </button>
+      </form>
+    </div>
+{/*     
       <div>
         <label htmlFor="email">Email</label>
         <input id="email" type="text" value={user?.email} disabled />
@@ -182,7 +302,7 @@ export default function AccountForm({ user }: { user: User | null }) {
             Sign out
           </button>
         </form>
-      </div>
+      </div> */}
     </div>
   )
 }
