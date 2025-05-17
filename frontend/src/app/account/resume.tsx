@@ -68,12 +68,12 @@ export default function Resume({
           </a>
         </div>
       ) : (
-        <div className="resume no-image">
+        <div>
           No resume Yet. Upload one
         </div>
       )}
-      <div>
-        <label className="button primary block" htmlFor="single">
+      <div  className="my-4 py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md inline-block">
+        <label htmlFor="single">
           {uploading ? 'Uploading ...' : 'Upload'}
         </label>
         <input
