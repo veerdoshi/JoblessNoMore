@@ -33,6 +33,7 @@ NEXT_PUBLIC_SUPABASE_URL=<YOUR SUPABASE URL>
 SUPABASE_SERVICE_KEY=<YOUR SUPABASE ANON KEY>
 OPENAI_API_KEY=<YOUR OPENAI KEY>
 ```
+*We can provide the Supabase keys, please email veerdoshi@berkeley.edu.*
 
 3. Run the FastAPI application (in /backend):
 ```bash
