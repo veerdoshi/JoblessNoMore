@@ -3,10 +3,12 @@ import { useCallback, useEffect, useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import { type User } from '@supabase/supabase-js'
 import Resume from './resume'
+import { useRouter } from 'next/navigation'
 
 // ...
 
 export default function AccountForm({ user }: { user: User | null }) {
+  const router = useRouter()
   const supabase = createClient()
   const [loading, setLoading] = useState(true)
   const [username, setUsername] = useState<string | null>(null)
@@ -100,7 +102,15 @@ export default function AccountForm({ user }: { user: User | null }) {
 
   return (
     <div className="max-w-xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg space-y-6">
-      <h1 className="text-2xl font-semibold text-gray-800">Account Settings</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-semibold text-gray-800">Account Settings</h1>
+        <button
+          onClick={() => router.push('/applications')}
+          className="px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700"
+        >
+          Applications
+        </button>
+      </div>
       <div className="space-y-4">
       <div>
         <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
