@@ -17,7 +17,7 @@ export default function Applications({user}: {user: User | null}) {
 
       const { data, error, status } = await supabase
         .from('applications')
-        .select(`apply_date, job_name, company, status`)
+        .select(`id, apply_date, job_name, company, status`)
         .eq('profile_id', user?.id)
 
       if (error && status !== 406) {
@@ -84,15 +84,37 @@ export default function Applications({user}: {user: User | null}) {
       {loading && <p>Loading applications...</p>}
       {!loading && applications.length === 0 && <p>No applications found</p>}
       {!loading && applications.length > 0 && (
-        <ul>
-            {applications.map((application) => (
-                <li key={application.id} className="text-black">
-                    <p>{application.job_name}</p>
-                    <p>{application.company}</p>
-                    <p>{application.status}</p>
-                    <p>{application.apply_date}</p>
-                </li>
-            ))}
+        <ul className="space-y-4">
+          {applications.map((application, index) => (
+            <li 
+              key={`${application.company}-${application.job_name}-${application.apply_date}`}
+              className="p-4 bg-gray-50 rounded-lg border border-gray-200 hover:shadow-md transition-shadow duration-200"
+            >
+              <div className="flex justify-between items-start">
+                <div className="space-y-1">
+                  <h3 className="font-semibold text-lg text-gray-900">
+                    {application.job_name}
+                  </h3>
+                  <p className="text-gray-600">
+                    {application.company}
+                  </p>
+                  <div className="flex items-center space-x-2">
+                    <span className={`px-2 py-1 text-sm rounded-full ${
+                      application.status === 'Applied' ? 'bg-blue-100 text-blue-800' :
+                      application.status === 'Rejected' ? 'bg-red-100 text-red-800' :
+                      application.status === 'Interview' ? 'bg-green-100 text-green-800' :
+                      'bg-gray-100 text-gray-800'
+                    }`}>
+                      {application.status}
+                    </span>
+                    <span className="text-sm text-gray-500">
+                      {new Date(application.apply_date).toLocaleDateString()}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </li>
+          ))}
         </ul>
       )}
     </div>
