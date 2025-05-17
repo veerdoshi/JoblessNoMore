@@ -1,6 +1,8 @@
 # JoblessNoMore
 
-A web application built with FastAPI (backend) and Next.js (frontend).
+A web application built with FastAPI (backend) and Next.js (frontend). Supabase is used for authentication and database.
+
+To run this application, create a free Supabase project.
 
 ## Project Structure
 
@@ -32,6 +34,12 @@ uvicorn app.main:app --reload
 ```
 
 ### Frontend Setup (in /frontend)
+Create `.env.local` with the contents:
+```
+NEXT_PUBLIC_SUPABASE_URL=<YOUR SUPABASE URL>
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<YOUR SUPABASE ANON KEY>
+```
+
 1. Install dependencies:
 ```bash
 npm install
