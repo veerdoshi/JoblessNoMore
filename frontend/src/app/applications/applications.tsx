@@ -68,6 +68,26 @@ export default function Applications({user}: {user: User | null}) {
     }
   }
 
+  const startOutreach = async (company_name: string, job_name: string) => {
+    try {
+      const response = await fetch('/api/outreach', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ company_name, job_name }),
+      })
+      
+      if (!response.ok) {
+        throw new Error('Failed to start outreach')
+      }
+      
+      alert('Started LinkedIn outreach process')
+    } catch (error) {
+      alert('Failed to start outreach process')
+    }
+  }
+
   return (
     <div className="max-w-xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg space-y-6">
       <div className="flex justify-between items-center">
@@ -111,6 +131,14 @@ export default function Applications({user}: {user: User | null}) {
                       {new Date(application.apply_date).toLocaleDateString()}
                     </span>
                   </div>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <button
+                    onClick={() => startOutreach(application.company, application.job_name)}
+                    className="px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-sm hover:bg-blue-700"
+                  >
+                    Reach Out
+                  </button>
                 </div>
               </div>
             </li>
