@@ -17,7 +17,7 @@ supabase = get_supabase_client()
 async def upload_resume(index: int, browser: BrowserContext):
     """Helper function to upload the resume PDF file"""
     global _current_upload_file_path
-    _current_upload_file_path = os.path.expanduser("~/Downloads/TesBoiResume.pdf")
+    _current_upload_file_path = os.path.expanduser("~/Downloads/Resume.pdf")
     
     if _current_upload_file_path is None:
         return ActionResult(error='No file path set for upload')
